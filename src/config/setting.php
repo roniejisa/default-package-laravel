@@ -7,5 +7,6 @@ return [
     'public_name' => '__tpPromotion',
     'cache_name' => 'tpc_cache',
     // Cấu hình router
-    'route_prefix' => 'tp-sys',
+    'route_prefix' => 'tp',
+    'no_render_assets_file' => false
 ];

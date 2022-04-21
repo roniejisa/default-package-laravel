@@ -29,6 +29,9 @@ class PromotionServiceProvider extends ServiceProvider
 
     private function moveFolderTheme()
     {
+        if (config(static::CONFIG_KEY_START . 'setting.no_render_assets_file')) {
+            return;
+        }
         // Cache::rememberForever(config(static::CONFIG_KEY_START.'setting.cache_name'), function () {
         $folderTo = public_path(config(static::CONFIG_KEY_START . 'setting.public_name'));
         $folderCopy = base_path() . config(static::CONFIG_KEY_START . 'setting.base_path') . '/public/';
