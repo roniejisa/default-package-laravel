@@ -1,0 +1,17 @@
+{
+    "name": "roniejisa/example-package",
+    "description": "Example Package Laravel",
+    "keywords": ["laravel"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "roniejisa",
+            "email": "roniejisa@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Example\\": "packages/example_packages/src/services"
+        }
+    }
+}
