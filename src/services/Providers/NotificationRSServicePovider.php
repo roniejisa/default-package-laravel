@@ -1,21 +1,21 @@
 <?php
-namespace ShippingDelivery\Providers;
+namespace NotificationRS\Providers;
 
 use Config;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Route;
 
-class ShippingDeliveryServiceProvider extends ServiceProvider
+class NotificationRSServicePovider extends ServiceProvider
 {
-    const CONFIG_KEY_START = 'sdc_';
+    const CONFIG_KEY_START = 'nrsc_';
 
     public function boot()
     {
         // Push config
         $this->initConfigFile();
         // Push view
-        $this->loadViewsFrom(__DIR__ . '/views', config('sdc_setting.soure_view'));
+        $this->loadViewsFrom(__DIR__ . '/views', config(static::CONFIG_KEY_START.'setting.soure_view'));
         // Push Provider Aliast
         // Lưu ý sẽ được khởi tạo sau Provider cuối cùng trong app\config
         $this->initProviderAlias();
