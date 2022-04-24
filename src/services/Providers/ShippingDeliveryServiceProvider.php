@@ -71,7 +71,7 @@ class ShippingDeliveryServiceProvider extends ServiceProvider
     private function pushConfig()
     {
         $tables = config(static::CONFIG_KEY_START.'view');
-
+        if(is_null($tables)) return;
         $newArray = [];
         foreach ($tables as $table => $value) {
             $newArray[$table] = $value;
