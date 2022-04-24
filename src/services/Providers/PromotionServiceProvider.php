@@ -1,21 +1,21 @@
 <?php
-namespace Tech5s\Promotion\Providers;
+namespace ShippingDelivery\Providers;
 
 use Config;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Route;
 
-class PromotionServiceProvider extends ServiceProvider
+class ShippingDeliveryServiceProvider extends ServiceProvider
 {
-    const CONFIG_KEY_START = 'tpc_';
+    const CONFIG_KEY_START = 'sdc_';
 
     public function boot()
     {
         // Push config
         $this->initConfigFile();
         // Push view
-        $this->loadViewsFrom(__DIR__ . '/views', 'tp');
+        $this->loadViewsFrom(__DIR__ . '/views', config('sdc_setting.soure_view'));
         // Push Provider Aliast
         // Lưu ý sẽ được khởi tạo sau Provider cuối cùng trong app\config
         $this->initProviderAlias();
@@ -59,7 +59,7 @@ class PromotionServiceProvider extends ServiceProvider
 
     private function initConfigFile()
     {
-        $arr = glob(base_path() . "/packages/tech5sMarketing/promotions/src/config/*.php");
+        $arr = glob(base_path() . "/packages/shipping_delivery_unit/src/config/*.php");
         foreach ($arr as $value) {
             $nameConfig = pathinfo($value)['filename'];
             if ($nameConfig !== 'app') {
@@ -70,7 +70,7 @@ class PromotionServiceProvider extends ServiceProvider
 
     private function pushConfig()
     {
-        $tables = config('sys_view');
+        $tables = config(static::CONFIG_KEY_START.'view');
 
         $newArray = [];
         foreach ($tables as $table => $value) {
@@ -84,7 +84,7 @@ class PromotionServiceProvider extends ServiceProvider
         foreach ($viewSettings as $table => $data) {
             $newArray[$table] = $data;
         }
-        Config::set('sys_view', $newArray);
+        Config::set(static::CONFIG_KEY_START.'view', $newArray);
     }
 
     public function initRouters()
