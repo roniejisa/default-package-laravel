@@ -38,9 +38,9 @@ class PromotionServiceProvider extends ServiceProvider
 
         /** Chú ý chỗ này sẽ có thể xóa hết file cần xác định đúng folder */
         /** Kiểm tra xem có 1 file bất kì tồn tại trong thư mục public không nếu có thì xóa cả folder cũ đi để thay mới */
-        if (file_exists($folderTo . '/css/base.css')) {
-            shell_exec("rm -rf $folderTo");
-        }
+        // if (file_exists($folderTo . '/css/base.css')) {
+        shell_exec("rm -rf $folderTo");
+        // }
 
         shell_exec("cp -r $folderCopy $folderTo");
         // });
