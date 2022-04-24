@@ -1,13 +1,13 @@
 <?php
 
 return [
-    'namespace_controller' => '\ShippingDelivery\Controllers',
-    'base_path' => '/packages/shipping_delivery_unit/src',
+    'namespace_controller' => '\NotificationRS\Controllers',
+    'base_path' => '/packages/notificationRS/src',
     // Cấu hình di chuyển thư mục public
-    'public_name' => '__deliveryShipping',
-    'cache_name' => 'sd_cache',
-    'soure_view' => 'sd',
+    'public_name' => '__notificationRS',
+    'cache_name' => 'nrs_cache',
+    'soure_view' => 'nrs',
     // Cấu hình router
-    'route_prefix' => 'sd',
+    'route_prefix' => 'nrs',
     'no_render_assets_file' => false
 ];

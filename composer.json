@@ -11,7 +11,7 @@
     ],
     "autoload": {
         "psr-4": {
-            "ShippingDelivery\\": "packages/shipping_delivery_unit/src/services"
+            "NotificationRS\\": "packages/notificationRS/src/services"
         }
     }
 }
