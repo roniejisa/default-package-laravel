@@ -4,12 +4,14 @@ namespace NotificationRS\Providers;
 use Config;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Route;
 
 class NotificationRSServicePovider extends ServiceProvider
 {
     const CONFIG_KEY_START = 'nrsc_';
-
+    const CONFIG_ADMIN_KEY = 'sys_';
+    
     public function boot()
     {
         // Push config
@@ -55,6 +57,9 @@ class NotificationRSServicePovider extends ServiceProvider
         foreach ($config['aliases'] as $key => $value) {
             AliasLoader::getInstance()->alias($key, $value);
         }
+        foreach($config['listeners'] as $listener){
+            Event::subscribe($listener);
+        }
     }
 
     private function initConfigFile()
@@ -69,22 +74,20 @@ class NotificationRSServicePovider extends ServiceProvider
     }
 
     private function pushConfig()
-    {
-        $tables = config(static::CONFIG_KEY_START.'view');
-        if(is_null($tables)) return;
-        $newArray = [];
-        foreach ($tables as $table => $value) {
-            $newArray[$table] = $value;
+    {   
+        $arrayConfigAdminNeedEdit = ['action'];
+        foreach($arrayConfigAdminNeedEdit as $config_table){
+            $config_defaults = config(static::CONFIG_ADMIN_KEY.$config_table, []);
+            $newArray = [];
+            foreach ($config_defaults as $table => $value) {
+                $newArray[$table] = $value;
+            }
+            $config_package_currents = config(static::CONFIG_KEY_START . $config_table, []);
+            foreach ($config_package_currents as $table => $data) {
+                $newArray[$table] = $data;
+            }
+            Config::set(static::CONFIG_ADMIN_KEY.$config_table, $newArray);
         }
-        $viewSettings = config(static::CONFIG_KEY_START . 'view');
-
-        if (is_null($viewSettings)) {
-            return;
-        }
-        foreach ($viewSettings as $table => $data) {
-            $newArray[$table] = $data;
-        }
-        Config::set(static::CONFIG_KEY_START.'view', $newArray);
     }
 
     public function initRouters()
