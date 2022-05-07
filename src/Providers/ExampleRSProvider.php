@@ -1,5 +1,5 @@
 <?php
-namespace NotificationRS\Providers;
+namespace ExampleRS\Providers;
 
 use Config;
 use Illuminate\Foundation\AliasLoader;
@@ -7,7 +7,7 @@ use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvi
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Route;
 
-class NotificationRSServicePovider extends ServiceProvider
+class ExampleRSProvider extends ServiceProvider
 {
     const CONFIG_KEY_START = 'nrsc_';
     const CONFIG_ADMIN_KEY = 'sys_';
@@ -64,7 +64,7 @@ class NotificationRSServicePovider extends ServiceProvider
 
     private function initConfigFile()
     {
-        $arr = glob(base_path() . "/packages/shipping_delivery_unit/src/config/*.php");
+        $arr = glob(base_path() . "/packages/example_packages/config/*.php");
         foreach ($arr as $value) {
             $nameConfig = pathinfo($value)['filename'];
             if ($nameConfig !== 'app') {
@@ -96,9 +96,14 @@ class NotificationRSServicePovider extends ServiceProvider
         $this->routes(function () use ($routes) {
             foreach ($routes as $route) {
                 $name = pathinfo($route)['filename'];
-                Route::prefix(config(static::CONFIG_KEY_START . 'setting.route_prefix') . "/$name")->middleware('web')
-                    ->namespace(config(static::CONFIG_KEY_START . 'setting.namespace_controller'))
-                    ->group($route);
+                if ($name == 'web') {
+                    $this->loadRoutesFrom(base_path() . config(static::CONFIG_KEY_START . 'setting.base_path') . '/routes/web.php');
+                } else {
+                    Route::prefix(config(static::CONFIG_KEY_START . 'setting.route_prefix') . "/$name")->middleware('web')
+                        ->namespace(config(static::CONFIG_KEY_START . 'setting.namespace_controller'))
+                        ->group($route);
+                }
+
             }
         });
     }

@@ -11,7 +11,7 @@
     ],
     "autoload": {
         "psr-4": {
-            "NotificationRS\\": "packages/notificationRS/src/services"
+            "ExampleRS\\": "packages/example_packages/src"
         }
     }
 }
