@@ -9,15 +9,16 @@ use Illuminate\Support\Facades\Route;
 
 class ExampleRSProvider extends ServiceProvider
 {
-    const CONFIG_KEY_START = 'nrsc_';
+    const PACKAGE_FOLDER = 'example';
+    const CONFIG_KEY_START = 'ersc_';
     const CONFIG_ADMIN_KEY = 'sys_';
-    
+
     public function boot()
     {
         // Push config
         $this->initConfigFile();
         // Push view
-        $this->loadViewsFrom(__DIR__ . '/views', config(static::CONFIG_KEY_START.'setting.soure_view'));
+        $this->loadViewsFrom(base_path(config(static::CONFIG_KEY_START . 'setting.base_path') . '/views'), config(static::CONFIG_KEY_START . 'setting.soure_view'));
         // Push Provider Aliast
         // Lưu ý sẽ được khởi tạo sau Provider cuối cùng trong app\config
         $this->initProviderAlias();
@@ -36,35 +37,34 @@ class ExampleRSProvider extends ServiceProvider
         }
         // Cache::rememberForever(config(static::CONFIG_KEY_START.'setting.cache_name'), function () {
         $folderTo = public_path(config(static::CONFIG_KEY_START . 'setting.public_name'));
-        $folderCopy = base_path() . config(static::CONFIG_KEY_START . 'setting.base_path') . '/public/';
+        $folderCopy = base_path(config(static::CONFIG_KEY_START . 'setting.base_path')) . '/public/';
 
         /** Chú ý chỗ này sẽ có thể xóa hết file cần xác định đúng folder */
         /** Kiểm tra xem có 1 file bất kì tồn tại trong thư mục public không nếu có thì xóa cả folder cũ đi để thay mới */
-        // if (file_exists($folderTo . '/css/base.css')) {
         shell_exec("rm -rf $folderTo");
-        // }
 
-        shell_exec("cp -r $folderCopy $folderTo");
-        // });
+        if (!file_exists($folderTo)) {
+            shell_exec("cp -r $folderCopy $folderTo");
+        }
     }
 
     private function initProviderAlias()
     {
-        $config = include base_path() . config(static::CONFIG_KEY_START . 'setting.base_path') . "/config/app.php";
+        $config = include base_path(config(static::CONFIG_KEY_START . 'setting.base_path') . "/config/app.php");
         foreach ($config['providers'] as $key => $value) {
             $this->app->register($value);
         }
         foreach ($config['aliases'] as $key => $value) {
             AliasLoader::getInstance()->alias($key, $value);
         }
-        foreach($config['listeners'] as $listener){
+        foreach ($config['listeners'] as $listener) {
             Event::subscribe($listener);
         }
     }
 
     private function initConfigFile()
     {
-        $arr = glob(base_path() . "/packages/example_packages/config/*.php");
+        $arr = glob(base_path() . "/packages/" . static::PACKAGE_FOLDER . "/config/*.php");
         foreach ($arr as $value) {
             $nameConfig = pathinfo($value)['filename'];
             if ($nameConfig !== 'app') {
@@ -74,10 +74,10 @@ class ExampleRSProvider extends ServiceProvider
     }
 
     private function pushConfig()
-    {   
+    {
         $arrayConfigAdminNeedEdit = ['action'];
-        foreach($arrayConfigAdminNeedEdit as $config_table){
-            $config_defaults = config(static::CONFIG_ADMIN_KEY.$config_table, []);
+        foreach ($arrayConfigAdminNeedEdit as $config_table) {
+            $config_defaults = config(static::CONFIG_ADMIN_KEY . $config_table, []);
             $newArray = [];
             foreach ($config_defaults as $table => $value) {
                 $newArray[$table] = $value;
@@ -86,7 +86,7 @@ class ExampleRSProvider extends ServiceProvider
             foreach ($config_package_currents as $table => $data) {
                 $newArray[$table] = $data;
             }
-            Config::set(static::CONFIG_ADMIN_KEY.$config_table, $newArray);
+            Config::set(static::CONFIG_ADMIN_KEY . $config_table, $newArray);
         }
     }
 
@@ -97,7 +97,7 @@ class ExampleRSProvider extends ServiceProvider
             foreach ($routes as $route) {
                 $name = pathinfo($route)['filename'];
                 if ($name == 'web') {
-                    $this->loadRoutesFrom(base_path() . config(static::CONFIG_KEY_START . 'setting.base_path') . '/routes/web.php');
+                    $this->loadRoutesFrom(base_path(config(static::CONFIG_KEY_START . 'setting.base_path') . '/routes/web.php'));
                 } else {
                     Route::prefix(config(static::CONFIG_KEY_START . 'setting.route_prefix') . "/$name")->middleware('web')
                         ->namespace(config(static::CONFIG_KEY_START . 'setting.namespace_controller'))

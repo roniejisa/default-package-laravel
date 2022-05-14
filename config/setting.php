@@ -2,7 +2,7 @@
 
 return [
     'namespace_controller' => '\ExampleRS\Controllers',
-    'base_path' => '/packages/example_packages',
+    'base_path' => '/packages/example',
     // Cấu hình di chuyển thư mục public
     'public_name' => '__example',
     'cache_name' => 'ers_cache',

@@ -1,4 +1,2 @@
 <?php
-Route::get('test/123', function () {
-    dd('12345');
-});
+Route::get('example-link', 'ExampleRS\Controllers\ExampleController@index');
