@@ -1,17 +1,31 @@
 {
-    "name": "roniejisa/example-package",
-    "description": "Example Package Laravel",
-    "keywords": ["laravel"],
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "roniejisa",
-            "email": "roniejisa@gmail.com"
-        }
-    ],
-    "autoload": {
-        "psr-4": {
-            "ExampleRS\\": "packages/example/src"
-        }
-    }
+	"name": "roniejisa/example-package",
+	"description": "Example Package Laravel",
+	"keywords": [
+		"laravel"
+	],
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "roniejisa",
+			"email": "roniejisa@gmail.com"
+		}
+	],
+	"autoload": {
+		"psr-4": {
+			"ExampleRS\\": "src"
+		}
+	},
+	"extra": {
+		"laravel": {
+			"providers": [
+				"ExampleRS\\Providers\\ExampleRSProvider"
+			]
+		}
+	},
+	"minimum-stability": "dev",
+	"prefer-stable": true,
+	"config": {
+		"sort-packages": true
+	}
 }

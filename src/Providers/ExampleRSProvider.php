@@ -41,7 +41,9 @@ class ExampleRSProvider extends ServiceProvider
 
         /** Chú ý chỗ này sẽ có thể xóa hết file cần xác định đúng folder */
         /** Kiểm tra xem có 1 file bất kì tồn tại trong thư mục public không nếu có thì xóa cả folder cũ đi để thay mới */
-        shell_exec("rm -rf $folderTo");
+        if(file_exists($folderTo."/readme.md")){
+            shell_exec("rm -rf $folderTo");
+        }
 
         if (!file_exists($folderTo)) {
             shell_exec("cp -r $folderCopy $folderTo");
